@@ -1,6 +1,6 @@
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 
-const LogIn = () => {
+const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -31,6 +31,28 @@ const LogIn = () => {
         </p>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
+                      {/* Email Input */}
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email Address
+            </label>
+            <div className="mt-1">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+          </div>
           {/* Email Input */}
           <div>
             <label
@@ -132,4 +154,4 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;
+export default SignIn;
