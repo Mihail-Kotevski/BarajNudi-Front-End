@@ -1,26 +1,42 @@
-
 import { useState } from "react";
+import axios from "axios";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
   const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: {preventDefault: () => void }) => {
     e.preventDefault();
-    // Here you would typically send the email and password to your authentication API
-    // console.log('Login attempt:', { email, password, rememberMe });
-    alert("Login functionality not implemented yet. Check console for data.");
-    // Example: call an authentication service
-    // authService.login(email, password, rememberMe)
-    //   .then(response => {
-    //     // Handle successful login (e.g., redirect user)
-    //   })
-    //   .catch(error => {
-    //     // Handle login error (e.g., show error message)
-    //   });
+    if(password!==repeatPassword){
+      setError("Лозинките не се софпаѓаат!")
+      console.log(error)
+      return 
+    }
+    try{
+      const response=await axios.post("http://localhost:3000/user/signup",{
+        name:name,
+        email:email,
+        password:password,
+        dateOfBirth:date
+      })
+      if(response.data.success){
+        setSuccess("Ве молиме верифирајтего вашиот Email!")
+        console.log(success)
+      }else{
+        setError("Ве молиме обидете се повторно!")
+        console.log(error)
+      }
+    }catch(error){
+      setError("Ве молиме обидетесе подоцна!")
+      console.log(error)
+    }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -41,7 +57,7 @@ const SignUp = () => {
               <input
                 id="name"
                 name="name"
-                type="name"
+                type="text"
                 autoComplete="name"
                 required
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -113,8 +129,8 @@ const SignUp = () => {
                 required
                 className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={repeatPassword}
+                onChange={(e) => setRepeatPassword(e.target.value)}
               />
             </div>
           </div>
