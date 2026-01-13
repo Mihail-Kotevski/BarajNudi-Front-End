@@ -18,22 +18,25 @@ const SignUp = () => {
       return 
     }
     try{
-      const response=await axios.post("http://localhost:3000/user/signup",{
+      let response = await axios.post('http://localhost:5000/user/signup',{
         name:name,
         email:email,
         password:password,
         dateOfBirth:date
       })
-      if(response.data.success){
+      if(response.status === 201 || response.status === 200){
         setSuccess("Ве молиме верифирајтего вашиот Email!")
         console.log(success)
       }else{
         setError("Ве молиме обидете се повторно!")
         console.log(error)
       }
-    }catch(error){
-      setError("Ве молиме обидетесе подоцна!")
-      console.log(error)
+    }catch(error:any){
+      if (error.response) {
+        setError(error.response.data.error || "Грешка при регистрација");
+      } else {
+        setError("Серверот не е достапен.");
+      }
     }
   };
 
