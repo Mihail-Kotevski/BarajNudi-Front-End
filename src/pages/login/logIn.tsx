@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 const SignIn = () => {
@@ -5,19 +6,19 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // Here you would typically send the email and password to your authentication API
-    // console.log('Login attempt:', { email, password, rememberMe });
-    alert("Login functionality not implemented yet. Check console for data.");
-    // Example: call an authentication service
-    // authService.login(email, password, rememberMe)
-    //   .then(response => {
-    //     // Handle successful login (e.g., redirect user)
-    //   })
-    //   .catch(error => {
-    //     // Handle login error (e.g., show error message)
-    //   });
+
+    try{
+      let response = await axios.post('http://localhost:5000/user/signin',{
+        email:email,
+        password:password
+      })
+      console.log('Login successful!', email);
+      return response.data;
+    }catch(error){
+      console.log("Log in Failed! " + error)
+    }
   };
 
   return (
@@ -31,28 +32,6 @@ const SignIn = () => {
         </p>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
-                      {/* Email Input */}
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email Address
-            </label>
-            <div className="mt-1">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-          </div>
           {/* Email Input */}
           <div>
             <label

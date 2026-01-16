@@ -9,6 +9,7 @@ const SignUp = () => {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const[responseStatus,setResponseStatus]=useState(Boolean)
 
   const handleSubmit = async (e: {preventDefault: () => void }) => {
     e.preventDefault();
@@ -26,15 +27,19 @@ const SignUp = () => {
       })
       if(response.status === 201 || response.status === 200){
         setSuccess("Ве молиме верифирајтего вашиот Email!")
+        setResponseStatus(true)
         console.log(success)
       }else{
+        setResponseStatus(false)
         setError("Ве молиме обидете се повторно!")
         console.log(error)
       }
     }catch(error:any){
       if (error.response) {
+        setResponseStatus(false)
         setError(error.response.data.error || "Грешка при регистрација");
       } else {
+        setResponseStatus(false)
         setError("Серверот не е достапен.");
       }
     }
@@ -169,6 +174,7 @@ const SignUp = () => {
             </button>
           </div>
         </form>
+        {<p className={`text-center p-2 rounded-md ${responseStatus?"border-green-400 bg-green-400":"border-red-400 bg-red-400"}`}>{responseStatus?success:error}</p>}
       </div>
     </div>
   );
